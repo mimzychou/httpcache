@@ -3,7 +3,6 @@
 //
 // It is only suitable for use as a 'private' cache (i.e. for a web-browser or an API-client
 // and not for a shared proxy).
-//
 package httpcache
 
 import (
@@ -56,7 +55,9 @@ func CachedResponse(c Cache, req *http.Request) (resp *http.Response, err error)
 	}
 
 	b := bytes.NewBuffer(cachedVal)
-	return http.ReadResponse(bufio.NewReader(b), req)
+	resp.Write(b)
+	return resp, nil
+	// return http.ReadResponse(bufio.NewReader(b), req)
 }
 
 // MemoryCache is an implemtation of Cache that stores responses in an in-memory map.
