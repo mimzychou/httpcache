@@ -12,6 +12,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"net/http/httptest"
 	"net/http/httputil"
 	"strings"
 	"sync"
@@ -54,9 +55,11 @@ func CachedResponse(c Cache, req *http.Request) (resp *http.Response, err error)
 		return
 	}
 
-	b := bytes.NewBuffer(cachedVal)
-	resp.Write(b)
-	return resp, nil
+	// b := bytes.NewBuffer(cachedVal)
+	w := httptest.NewRecorder()
+	w.Write(cachedVal)
+	// resp.Write(b)
+	return w.Result(), nil
 	// return http.ReadResponse(bufio.NewReader(b), req)
 }
 
